@@ -7,7 +7,7 @@ module.exports = function(grunt) {
  
     uglify: {
       options: {
-        banner: "/*\n<%= pkg.name %> v<%= pkg.version %> \n\n<%= licence %>*/\n\n",
+        banner: "/*\n<%= pkg.name %> v<%= pkg.version %> \n\n<%= licence %>*/\n",
         preserveComments: "some"
       },
       build: {
