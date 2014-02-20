@@ -21,12 +21,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////////
 
-(function() {
+tgame.effects = (function() {
   "use strict";
 
-  var tgame = window.tgame;
-
-  tgame.effects = {
+  return {
     fade: function(options) {
       options = options || {};
       var objects = options.objects || [];

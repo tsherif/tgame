@@ -7,7 +7,7 @@ module.exports = function(grunt) {
  
     uglify: {
       options: {
-        banner: "/*\n<%= pkg.name %> v<%= pkg.version %> \n\n<%= licence %>*/\n",
+        banner: "/*\n<%= pkg.name %> v<%= pkg.version %> \n\n<%= licence %>*/\n\n",
         preserveComments: "some"
       },
       build: {
@@ -29,7 +29,10 @@ module.exports = function(grunt) {
         latedef: "nofunc",
         newcap: true,
         nonew: true,
-        trailing: true
+        trailing: true,
+        globals: {
+          tgame: true
+        }
       },
       grunt: {
         options: {

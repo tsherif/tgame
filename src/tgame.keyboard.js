@@ -21,12 +21,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////////
 
-(function() {
+tgame.keyboard = (function() {
   "use strict";
 
-  var tgame = window.tgame;
-
-  tgame.keyboard = {
+  return {
     BACKSPACE: 8,
     TAB: 9,
     ENTER: 13,

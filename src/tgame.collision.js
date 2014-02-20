@@ -21,12 +21,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////////
 
-(function() {
+tgame.collision = (function() {
   "use strict";
 
-  var tgame = window.tgame;
-
-  tgame.collision = {
+  return {
     rectangle: function(o1, o2) {
       var collision = null;
       var side = null;
