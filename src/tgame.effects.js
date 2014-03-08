@@ -21,10 +21,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////////
 
-tgame.effects = (function() {
+(function(tgame) {
   "use strict";
 
-  return {
+  tgame.effects = {
     fade: function(options) {
       options = options || {};
       var objects = options.objects || [];
@@ -36,37 +36,12 @@ tgame.effects = (function() {
       var fadeFunction, filterFunction;
 
       if (multiplier > 1) {
-        fadeFunction = fadeIn;
+        fadeFunction = fadeInFunction(multiplier, remove);
         filterFunction = filterFadeIn;
       } else {
-        fadeFunction = fadeOut;
+        fadeFunction = fadeOutFunction(multiplier, remove);
         filterFunction = filterFadeOut;
       }
-
-      function fadeIn(o) {
-        if (o.alpha < 0.99) {
-          o.alpha = o.alpha * multiplier || 0.01;
-        } else {
-          o.alpha = 1;
-          if (remove) {
-            o.remove = true;
-          }
-        }
-      }
-
-      function fadeOut(o) {
-        if (o.alpha > 0.01) {
-          o.alpha *= multiplier;
-        } else {
-          o.alpha = 0;
-          if (remove) {
-            o.remove = true;
-          }
-        }
-      }
-
-      function filterFadeIn(o) { return o.alpha < 1; }
-      function filterFadeOut(o) { return o.alpha > 0; }
 
       setTimeout(function fade() {
         objects.forEach(fadeFunction);
@@ -81,4 +56,35 @@ tgame.effects = (function() {
       }, delay);
     }
   };
-})();
+
+
+  function fadeInFunction(multiplier, remove) {
+    return function(o) {
+      if (o.alpha < 0.99) {
+        o.alpha = o.alpha * multiplier || 0.01;
+      } else {
+        o.alpha = 1;
+        if (remove) {
+          o.remove = true;
+        }
+      }
+    };
+  }
+
+  function fadeOutFunction(multiplier, remove) {
+    return function(o) {
+      if (o.alpha > 0.01) {
+        o.alpha *= multiplier;
+      } else {
+        o.alpha = 0;
+        if (remove) {
+          o.remove = true;
+        }
+      }
+    };
+  }
+
+  function filterFadeIn(o) { return o.alpha < 1; }
+  function filterFadeOut(o) { return o.alpha > 0; }
+
+})(tgame);
