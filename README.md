@@ -90,7 +90,7 @@ To load an image, simply call **tgame.addImage()** with a name for the asset and
   tgame.addImage("player", "img/player.png");
 ```
 
-Once the game loads, the [Image](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.Image) object associated with this asset will be available as **tgame.images.player**.
+Once the game loads, the [Image object](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.Image) associated with this asset will be available as **tgame.images.player**.
 
 To load a sound, simple call **tgame.addSound()** with a name for the asset and the asset's URL **without** its file extension. **tgame** will assume that both [**.ogg**](http://www.vorbis.com/) and [**.mp3**](http://en.wikipedia.org/wiki/MP3) sound files exist at the given URL with the appropriate extension, and will load the one supported by the user's browser :
 
@@ -98,7 +98,7 @@ To load a sound, simple call **tgame.addSound()** with a name for the asset and 
   tgame.addSound("music", "sounds/music");
 ```
 
-Once the game loads, the [Audio](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement) object associated with this asset will be available as **tgame.sounds.music**.
+Once the game loads, the [Audio object](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement) associated with this asset will be available as **tgame.sounds.music**.
 
 
 States
