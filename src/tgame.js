@@ -67,6 +67,7 @@
       width: 0,
       height: 0
     },
+    STATES: {},
     setFPS: function(fps) {
       frame_interval = 1000 / fps;
     },
@@ -226,14 +227,12 @@
     render_order.forEach(function(object_type) {
       tgame.entities[object_type].forEach(function(o) {
         if (!o.hidden) {
+          context.save();
           if (o.fixed) {
-            context.save();
             context.translate(tgame.camera.x, tgame.camera.y);
-            o.draw(context);
-            context.restore();
-          } else {
-            o.draw(context);
           }
+          o.draw(context);
+          context.restore();
         }
       });
     });

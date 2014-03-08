@@ -28,14 +28,14 @@ tgame.effects = (function() {
     fade: function(options) {
       options = options || {};
       var objects = options.objects || [];
-      var ratio = typeof options.ratio === "number" ? options.ratio : 0.9;
+      var multiplier = typeof options.multiplier === "number" ? options.multiplier : 0.9;
       var interval = typeof options.interval === "number" ? options.interval : 30;
       var delay = typeof options.delay === "number" ? options.delay : 0;
       var remove = options.remove || false;
       var callback = options.complete;
       var fadeFunction, filterFunction;
 
-      if (ratio > 1) {
+      if (multiplier > 1) {
         fadeFunction = fadeIn;
         filterFunction = filterFadeIn;
       } else {
@@ -45,7 +45,7 @@ tgame.effects = (function() {
 
       function fadeIn(o) {
         if (o.alpha < 0.99) {
-          o.alpha = o.alpha * ratio || 0.01;
+          o.alpha = o.alpha * multiplier || 0.01;
         } else {
           o.alpha = 1;
           if (remove) {
@@ -56,7 +56,7 @@ tgame.effects = (function() {
 
       function fadeOut(o) {
         if (o.alpha > 0.01) {
-          o.alpha *= ratio;
+          o.alpha *= multiplier;
         } else {
           o.alpha = 0;
           if (remove) {
@@ -70,7 +70,6 @@ tgame.effects = (function() {
 
       setTimeout(function fade() {
         objects.forEach(fadeFunction);
-        
 
         objects = objects.filter(filterFunction);
         if (objects.length > 0) {
