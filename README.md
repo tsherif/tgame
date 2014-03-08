@@ -3,7 +3,7 @@ tgame
 
 A simple and very basic JavaScript game engine.
 
-Implements a flexible state machine, asset loaders and helpers for basic collision detection, mouse and keyboard IO, and special effects.
+Implements a flexible state machine, asset loaders and helpers for basic collision detection, mouse and keyboard binding, and special effects.
 
 
 Basics
