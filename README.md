@@ -92,7 +92,7 @@ To load an image, simply call **tgame.addImage()** with a name for the asset and
 
 Once the game loads, the [Image](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.Image) object associated with this asset will be available as **tgame.images.player**.
 
-To load a sound, simple call **tgame.addSound()** with a name for the asset and the asset's URL **without** its file extension. **tgame** will assume that both [**.ogg**](http://www.vorbis.com/) and [**.mp3**](http://en.wikipedia.org/wiki/MP3) sound files exist at the given URL with the appropriate extention, and will load the one supported by the user's browser :
+To load a sound, simple call **tgame.addSound()** with a name for the asset and the asset's URL **without** its file extension. **tgame** will assume that both [**.ogg**](http://www.vorbis.com/) and [**.mp3**](http://en.wikipedia.org/wiki/MP3) sound files exist at the given URL with the appropriate extension, and will load the one supported by the user's browser :
 
 ```JavaScript
   tgame.addSound("music", "sounds/music");
