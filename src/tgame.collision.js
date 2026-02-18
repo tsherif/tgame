@@ -85,7 +85,7 @@
 
       var dx = center_x2 - center_x1;
       var dy = center_y2 - center_y1;
-      
+
       return Math.sqrt(dx * dx + dy * dy) < half_width1 + half_width2;
     },
     blockCircle: function(o1, o2) {
@@ -98,11 +98,11 @@
       var half_height2 = o2.height * 0.5;
       var center_x2 = o2.x + half_width2;
       var center_y2 = o2.y + half_height2;
-      
+
       var dx = center_x2 - center_x1;
       var dy = center_y2 - center_y1;
       var d = Math.sqrt(dx * dx + dy * dy);
-      
+
       var r_total = half_width1 + half_width2;
       var overlap;
 

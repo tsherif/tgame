@@ -8,12 +8,16 @@
   "author": {
     "name": "Tarek Sherif",
     "email": "tsherif@gmail.com",
-    "url": "http://tareksherif.ca/"
+    "url": "http://tareksherif.net/"
   },
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint"
+  },
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-uglify": "~0.3.2"
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "globals": "^17.3.0",
+    "terser": "^5.46.0"
   }
 }

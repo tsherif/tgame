@@ -32,7 +32,6 @@
 
   var asset_sources = [];
   var assets_loaded = 0;
-  var frame_interval = 1000 / 60;
 
   var audio_extension = "";
 
@@ -68,9 +67,6 @@
       height: 0
     },
     STATES: {},
-    setFPS: function(fps) {
-      frame_interval = 1000 / fps;
-    },
     setCanvas: function(c) {
       canvas = c;
       context = canvas.getContext("2d");
@@ -141,7 +137,7 @@
             if (keydown_handlers[event.keyCode](event) !== false) {
               event.preventDefault();
             }
-            
+
           }
         }, false);
 
@@ -157,9 +153,9 @@
         loadAssets();
       } else {
         last_frame = Date.now();
-        update();
+        render();
       }
-      
+
     }
   };
 
@@ -193,18 +189,17 @@
       tgame[a.type + "s"][a.name] = asset_handlers[a.type](a.url, function() {
         assets_loaded++;
         if (assets_loaded === asset_sources.length) {
-          update();
+          render();
         }
       });
     });
   }
 
-  function update() {
+  function render() {
     window.requestAnimationFrame(render);
-    setTimeout(update, frame_interval);
 
     current_frame = Date.now();
-    if (tgame.STATES.hasOwnProperty(tgame.state)) {
+    if (Object.hasOwn(tgame.STATES, tgame.state)) {
       tgame.STATES[tgame.state](current_frame - last_frame);
     }
 
@@ -215,9 +210,7 @@
         return !o.remove;
       });
     });
-  }
 
-  function render() {
     context.save();
     context.fillStyle = tgame.clear_color || "#000000";
     context.fillRect(0, 0, canvas.width, canvas.height);
