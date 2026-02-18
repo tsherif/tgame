@@ -15,12 +15,6 @@ To start a game with **tgame**, first set the game canvas:
   tgame.setCanvas(document.getElementById("game-area"));
 ```
 
-Set the frames per second:
-
-```JavaScript
-  tgame.setFPS(30);
-```
-
 Add assets: 
 
 ```JavaScript
