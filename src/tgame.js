@@ -38,6 +38,10 @@
   var keydown_handlers = {};
   var keyup_handlers = {};
   var render_order;
+  var projection = {
+    offset: { x: 0, y: 0 },
+    scale: 1
+  };
   var last_frame, current_frame;
 
   (function audioTest() {
@@ -85,6 +89,13 @@
     },
     getCanvas: function() { return canvas; },
     getContext: function() { return context; },
+    setProjectionOffset: function (x, y) {
+      projection.offset.x = x;
+      projection.offset.y = y;
+    },
+    setProjectionScale: function(s) {
+      projection.scale = s;
+    },
     addImage: function(name, url) {
       addAsset(name, "image", url);
     },
@@ -214,6 +225,9 @@
     context.save();
     context.fillStyle = tgame.clear_color || "#000000";
     context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.translate(projection.offset.x, projection.offset.y);
+    context.scale(projection.scale, projection.scale);
 
     context.translate(-tgame.camera.x, -tgame.camera.y);
 
