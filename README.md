@@ -64,6 +64,13 @@ Define game states:
   };
 ```
 
+Optionally, define a projection from world to canvas coordinates.
+
+```JavaScript
+  tgame.setProjectionOffset(x, y);
+  tgame.setProjectionScale(s);
+```
+
 Set the initial game state and start:
 
 ```JavaScript
