@@ -96,6 +96,13 @@
     setProjectionScale: function(s) {
       projection.scale = s;
     },
+    toggleFullscreen: function() {
+      if (!document.fullscreenElement) {
+        canvas.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    },
     addImage: function(name, url) {
       addAsset(name, "image", url);
     },
