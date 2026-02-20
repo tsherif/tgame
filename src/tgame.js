@@ -283,6 +283,7 @@
   }
 
   /*
+    CHROME
     axes[0]: left stick x
     axes[1]: left stick y
     axes[6]: dpad x
@@ -295,16 +296,35 @@
     button[5]: R
     button[6]: SELECT
     button[7]: START
+
+    FF:
+    axes[0]: left stick x
+    axes[1]: left stick y
+    button[12]: dpad up
+    button[13]: dpad down
+    button[14]: dpad left
+    button[15]: dpad right
+    button[0]: A
+    button[1]: B
+    button[3]: X // Reversed from Chrome!
+    button[2]: Y // Reversed from Chrome!
+    button[4]: L
+    button[5]: R
+    button[8]: SELECT
+    button[9]: START
   */
   function processGamepad(gp) {
+    var dpad_left = gp.axes[6] < -0.5 || (gp.buttons[14] && gp.buttons[14].pressed) || false;
+    var dpad_right = gp.axes[6] > 0.5 || (gp.buttons[15] && gp.buttons[15].pressed) || false;
+    var dpad_up = gp.axes[7] < -0.5 || (gp.buttons[12] && gp.buttons[12].pressed) || false;
+    var dpad_down = gp.axes[7] > 0.5 || (gp.buttons[13] && gp.buttons[13].pressed) || false;
+
     var a = gp.buttons[0].pressed;
     var b = gp.buttons[1].pressed;
-    var x = gp.buttons[2].pressed;
-    var y = gp.buttons[3].pressed;
     var l = gp.buttons[4].pressed;
     var r = gp.buttons[5].pressed;
-    var select = gp.buttons[6].pressed;
-    var start = gp.buttons[7].pressed;
+    var select = gp.buttons[6].pressed || gp.buttons[8].pressed;
+    var start = gp.buttons[7].pressed || gp.buttons[9].pressed;
 
     var gamepad =  {
       left_stick: {
@@ -312,8 +332,10 @@
         y: gp.axes[1],
       },
       dpad: {
-        x: gp.axes[6],
-        y: gp.axes[7],
+        left: dpad_left,
+        right: dpad_right,
+        up: dpad_up,
+        down: dpad_down
       },
       a: {
         down: a,
@@ -322,14 +344,6 @@
       b: {
         down: b,
         changed: b !== last_gamepad.b.down
-      },
-      x: {
-        down: x,
-        changed: x !== last_gamepad.x.down
-      },
-      y: {
-        down: y,
-        changed: y !== last_gamepad.y.down
       },
       l: {
         down: l,
