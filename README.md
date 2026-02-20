@@ -203,6 +203,28 @@ Mouse controls can be added using the methods **tgame.mouseDown**, **tgame.mouse
   });
 ```
 
+Gamepad support is provided via the **tgame.gamepad** method. An object will be passed to the provided callback that attempts to provide a cross-browser mapping of gamepad buttons:
+
+```JavaScript
+  tgame.gamepad(function(gp) {
+    doSomething(
+      gp.left_stick, // { x: -1..1, y: -1..1 }
+      gp.dpad.left,  // { down: boolean, changed: boolean }
+      gp.dpad.right, // { down: boolean, changed: boolean }
+      gp.dpad.up,    // { down: boolean, changed: boolean }
+      gp.dpad.down,  // { down: boolean, changed: boolean }
+      gp.a,          // { down: boolean, changed: boolean }
+      gp.b,          // { down: boolean, changed: boolean }
+      dp.l,          // { down: boolean, changed: boolean }
+      dp.r,          // { down: boolean, changed: boolean }
+      dp.select,     // { down: boolean, changed: boolean }
+      dp.start,      // { down: boolean, changed: boolean }
+    )
+  });
+```
+
+**NOTE:** `X` and `Y` buttons aren't provided as their mappings are inconsistent across browsers.
+
 Collisions
 ----------
 
