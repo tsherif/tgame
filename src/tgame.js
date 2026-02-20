@@ -41,22 +41,28 @@
       y: 0,
     },
     dpad: {
-      x: 0,
-      y: 0,
+      left: {
+        changed: false,
+        down: false
+      },
+      right: {
+        changed: false,
+        down: false
+      },
+      up: {
+        changed: false,
+        down: false
+      },
+      down: {
+        changed: false,
+        down: false
+      }
     },
     a: {
       changed: false,
       down: false
     },
     b: {
-      changed: false,
-      down: false
-    },
-    x: {
-      changed: false,
-      down: false
-    },
-    y: {
       changed: false,
       down: false
     },
@@ -282,6 +288,26 @@
     });
   }
 
+  function processLeftStick(x, y) {
+    var DEADZONE = 0.1;
+    var DEADZONE_2 = DEADZONE * DEADZONE;
+    var l2 = x * x + y * y;
+    if (l2 < DEADZONE_2) {
+      return {
+        x: 0,
+        y: 0,
+      }
+    };
+
+    // Remap to readius outside deadzone.
+    var s = (Math.sqrt(l2) - DEADZONE) / (1 - DEADZONE);
+
+    return {
+      x: x * s,
+      y: y * s,
+    };
+  }
+
   /*
     CHROME
     axes[0]: left stick x
@@ -327,15 +353,24 @@
     var start = gp.buttons[7].pressed || gp.buttons[9].pressed;
 
     var gamepad =  {
-      left_stick: {
-        x: gp.axes[0],
-        y: gp.axes[1],
-      },
+      left_stick: processLeftStick(gp.axes[0], gp.axes[1]),
       dpad: {
-        left: dpad_left,
-        right: dpad_right,
-        up: dpad_up,
-        down: dpad_down
+        left: {
+          down: dpad_left,
+          changed: dpad_left !== last_gamepad.dpad.left.down
+        },
+        right: {
+          down: dpad_right,
+          changed: dpad_right !== last_gamepad.dpad.right.down
+        },
+        up: {
+          down: dpad_up,
+          changed: dpad_up !== last_gamepad.dpad.up.down
+        },
+        down: {
+          down: dpad_down,
+          changed: dpad_down !== last_gamepad.dpad.down.down
+        }
       },
       a: {
         down: a,
