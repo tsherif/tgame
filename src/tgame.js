@@ -35,8 +35,54 @@
 
   var audio_extension = "";
 
+  var DEFAULT_GAMEPAD = {
+    left_stick: {
+      x: 0,
+      y: 0,
+    },
+    dpad: {
+      x: 0,
+      y: 0,
+    },
+    a: {
+      changed: false,
+      down: false
+    },
+    b: {
+      changed: false,
+      down: false
+    },
+    x: {
+      changed: false,
+      down: false
+    },
+    y: {
+      changed: false,
+      down: false
+    },
+    l: {
+      changed: false,
+      down: false
+    },
+    r: {
+      changed: false,
+      down: false
+    },
+    select: {
+      changed: false,
+      down: false
+    },
+    start: {
+      changed: false,
+      down: false
+    },
+  };
+
   var keydown_handlers = {};
   var keyup_handlers = {};
+  var gamepad_index = -1;
+  var last_gamepad = DEFAULT_GAMEPAD;
+  var gamepad_handler;
   var render_order;
   var projection = {
     offset: { x: 0, y: 0 },
@@ -133,6 +179,9 @@
         handler(event.clientX - canvas_offset.x, event.clientY - canvas_offset.y);
       }, false);
     },
+    gamepad: function (handler) {
+      gamepad_handler = handler;
+    },
     setRenderOrder: function(order) {
       render_order = order;
     },
@@ -167,6 +216,26 @@
           }
         }, false);
       }
+
+      if (gamepad_handler) {
+        gamepad_index = navigator.getGamepads().findIndex(Boolean);
+        last_gamepad = DEFAULT_GAMEPAD;
+
+        window.addEventListener("gamepadconnected", function (e) {
+          if (gamepad_index === -1) {
+            gamepad_index = e.gamepad.index;
+            last_gamepad = DEFAULT_GAMEPAD;
+          }
+        })
+
+        window.addEventListener("gamepaddisconnected", function (e) {
+          if (gamepad_index === e.gamepad.index) {
+            gamepad_index = navigator.getGamepads().findIndex(Boolean);
+            last_gamepad = DEFAULT_GAMEPAD;
+          }
+        })
+      }
+
       if (asset_sources.length > 0) {
         loadAssets();
       } else {
@@ -213,10 +282,89 @@
     });
   }
 
+  /*
+    axes[0]: left stick x
+    axes[1]: left stick y
+    axes[6]: dpad x
+    axes[7]: dpad y
+    button[0]: A
+    button[1]: B
+    button[2]: X
+    button[3]: Y
+    button[4]: L
+    button[5]: R
+    button[6]: SELECT
+    button[7]: START
+  */
+  function processGamepad(gp) {
+    var a = gp.buttons[0].pressed;
+    var b = gp.buttons[1].pressed;
+    var x = gp.buttons[2].pressed;
+    var y = gp.buttons[3].pressed;
+    var l = gp.buttons[4].pressed;
+    var r = gp.buttons[5].pressed;
+    var select = gp.buttons[6].pressed;
+    var start = gp.buttons[7].pressed;
+
+    var gamepad =  {
+      left_stick: {
+        x: gp.axes[0],
+        y: gp.axes[1],
+      },
+      dpad: {
+        x: gp.axes[6],
+        y: gp.axes[7],
+      },
+      a: {
+        down: a,
+        changed: a !== last_gamepad.a.down
+      },
+      b: {
+        down: b,
+        changed: b !== last_gamepad.b.down
+      },
+      x: {
+        down: x,
+        changed: x !== last_gamepad.x.down
+      },
+      y: {
+        down: y,
+        changed: y !== last_gamepad.y.down
+      },
+      l: {
+        down: l,
+        changed: l !== last_gamepad.l.down
+      },
+      r: {
+        down: r,
+        changed: r !== last_gamepad.r.down
+      },
+      select: {
+        down: select,
+        changed: select !== last_gamepad.select.down
+      },
+      start: {
+        down: start,
+        changed: start !== last_gamepad.start.down
+      }
+    };
+
+    last_gamepad = gamepad;
+
+    return gamepad;
+  }
+
   function render() {
     window.requestAnimationFrame(render);
 
     current_frame = Date.now();
+
+    var gp = navigator.getGamepads()[gamepad_index];
+    if (gamepad_handler && gp) {
+      var gamepad = processGamepad(gp);
+      gamepad_handler(gamepad);
+    }
+
     if (Object.hasOwn(tgame.STATES, tgame.state)) {
       tgame.STATES[tgame.state](current_frame - last_frame);
     }
