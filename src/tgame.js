@@ -94,6 +94,7 @@
     offset: { x: 0, y: 0 },
     scale: 1
   };
+  var time_step = 1000 / 60;
   var last_frame, current_frame;
 
   (function audioTest() {
@@ -141,6 +142,9 @@
     },
     getCanvas: function() { return canvas; },
     getContext: function() { return context; },
+    setTimeStep: function(t) {
+      time_step = t
+    },
     setProjectionOffset: function (x, y) {
       projection.offset.x = x;
       projection.offset.y = y;
@@ -206,7 +210,6 @@
       if (Object.keys(keydown_handlers).length > 0) {
         document.addEventListener("keydown", function(event) {
           if (keydown_handlers[event.keyCode]) {
-
             if (keydown_handlers[event.keyCode](event) !== false) {
               event.preventDefault();
             }
@@ -407,6 +410,7 @@
     window.requestAnimationFrame(render);
 
     current_frame = Date.now();
+    var dt = current_frame - last_frame;
 
     var gp = navigator.getGamepads()[gamepad_index];
     if (gamepad_handler && gp) {
@@ -414,8 +418,15 @@
       gamepad_handler(gamepad);
     }
 
+    while (dt > time_step) {
+      if (Object.hasOwn(tgame.STATES, tgame.state)) {
+        tgame.STATES[tgame.state](time_step);
+      }
+      dt -= time_step;
+    }
+
     if (Object.hasOwn(tgame.STATES, tgame.state)) {
-      tgame.STATES[tgame.state](current_frame - last_frame);
+      tgame.STATES[tgame.state](dt);
     }
 
     last_frame = current_frame;
