@@ -95,6 +95,7 @@
     scale: 1
   };
   var time_step = 1000 / 60;
+  var tick_time = 0;
   var last_frame, current_frame;
 
   (function audioTest() {
@@ -285,6 +286,7 @@
       tgame[a.type + "s"][a.name] = asset_handlers[a.type](a.url, function() {
         assets_loaded++;
         if (assets_loaded === asset_sources.length) {
+          last_frame = Date.now();
           render();
         }
       });
@@ -410,7 +412,7 @@
     window.requestAnimationFrame(render);
 
     current_frame = Date.now();
-    var dt = current_frame - last_frame;
+    tick_time += Math.min(current_frame - last_frame, 50);
 
     var gp = navigator.getGamepads()[gamepad_index];
     if (gamepad_handler && gp) {
@@ -418,15 +420,18 @@
       gamepad_handler(gamepad);
     }
 
-    while (dt > time_step) {
-      if (Object.hasOwn(tgame.STATES, tgame.state)) {
-        tgame.STATES[tgame.state](time_step);
+    if (tick_time > time_step) {
+      while (tick_time > time_step) {
+        if (Object.hasOwn(tgame.STATES, tgame.state)) {
+          tgame.STATES[tgame.state](time_step);
+        }
+        tick_time -= time_step;
       }
-      dt -= time_step;
-    }
 
-    if (Object.hasOwn(tgame.STATES, tgame.state)) {
-      tgame.STATES[tgame.state](dt);
+      if (Object.hasOwn(tgame.STATES, tgame.state)) {
+        tgame.STATES[tgame.state](tick_time);
+      }
+      tick_time = 0;
     }
 
     last_frame = current_frame;
